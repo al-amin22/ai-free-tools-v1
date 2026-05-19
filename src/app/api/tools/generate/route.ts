@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { type NextRequest } from 'next/server'
 import { query, queryOne } from '@/lib/db'
 import { checkRateLimit, hashIP, getClientIP } from '@/lib/rate-limit'
 import { getCache, setCache, generateKey } from '@/lib/cache'
@@ -10,7 +11,7 @@ const GenerateSchema = z.object({
   inputs: z.record(z.string(), z.string()),
 })
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     // Parse dan validate input
     const body = await request.json()
