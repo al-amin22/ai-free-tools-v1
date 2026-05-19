@@ -1,0 +1,40 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/fetch-trends",
+      "schedule": "0 */6 * * *"
+    },
+    {
+      "path": "/api/cron/generate-article",
+      "schedule": "0 8 * * *"
+    },
+    {
+      "path": "/api/cron/seo-audit",
+      "schedule": "0 2 * * 1"
+    },
+    {
+      "path": "/api/cron/keyword-monitor",
+      "schedule": "0 6 * * *"
+    },
+    {
+      "path": "/api/cron/quality-monitor",
+      "schedule": "0 4 * * *"
+    },
+    {
+      "path": "/api/cron/content-evaluator",
+      "schedule": "0 3 * * 3"
+    },
+    {
+      "path": "/api/cron/ranking-tracker",
+      "schedule": "0 9 * * *"
+    },
+    {
+      "path": "/api/cron/backlink-finder",
+      "schedule": "0 10 * * *"
+    },
+    {
+      "path": "/api/cron/competitor-analysis",
+      "schedule": "0 0 1 * *"
+    }
+  ]
+}
