@@ -1,53 +1,73 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import Anthropic from '@anthropic-ai/sdk';
 import OpenAI from 'openai';
-import type { AIRequest, AIResponse, AIProvider } from '@aifreetools/shared-types';
+import { GoogleGenerativeAI } from '@google/generative-ai';
+import type { AIRequest, AIResponse } from '@aifreetools/shared-types';
 import { createHash } from 'crypto';
 import { InjectRedis } from './redis.decorator';
 import type Redis from 'ioredis';
 
 const CACHE_TTL_SECONDS = 3600;
+const MAX_RETRIES = 3;
+
+type Provider = 'groq' | 'gemini';
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((r) => setTimeout(r, ms));
+}
+
+async function withRetry<T>(fn: () => Promise<T>, maxRetries = MAX_RETRIES): Promise<T> {
+  let lastErr: Error = new Error('Unknown error');
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      return await fn();
+    } catch (err) {
+      lastErr = err as Error;
+      if (attempt < maxRetries) {
+        await sleep(Math.pow(2, attempt - 1) * 600); // 600ms, 1.2s, 2.4s
+      }
+    }
+  }
+  throw lastErr;
+}
 
 @Injectable()
 export class AIProviderRouter {
   private readonly logger = new Logger(AIProviderRouter.name);
-  private readonly anthropic: Anthropic;
-  private readonly openai: OpenAI;
   private readonly groq: OpenAI;
+  private readonly gemini: GoogleGenerativeAI;
 
   constructor(
     private readonly config: ConfigService,
     @InjectRedis() private readonly redis: Redis
   ) {
-    this.anthropic = new Anthropic({ apiKey: config.get('ANTHROPIC_API_KEY') });
-    this.openai = new OpenAI({ apiKey: config.get('OPENAI_API_KEY') });
     this.groq = new OpenAI({
-      apiKey: config.get('GROQ_API_KEY'),
+      apiKey: config.get<string>('GROQ_API_KEY', ''),
       baseURL: 'https://api.groq.com/openai/v1',
     });
+    this.gemini = new GoogleGenerativeAI(config.get<string>('GEMINI_API_KEY', ''));
   }
 
   async generate(request: AIRequest): Promise<AIResponse> {
     const cacheKey = this.buildCacheKey(request);
-    const cached = await this.redis.get(cacheKey);
 
+    const cached = await this.redis.get(cacheKey).catch(() => null);
     if (cached) {
-      this.logger.log(`Cache hit: ${cacheKey}`);
-      return { ...JSON.parse(cached) as AIResponse, cached: true };
+      this.logger.debug(`Cache hit: ${cacheKey}`);
+      return { ...(JSON.parse(cached) as AIResponse), cached: true };
     }
 
-    const providers: AIProvider[] = ['claude', 'openai', 'groq'];
+    const providers: Provider[] = ['groq', 'gemini'];
     let lastError: Error | null = null;
 
     for (const provider of providers) {
       try {
-        const response = await this.callProvider(provider, request);
-        await this.redis.setex(cacheKey, CACHE_TTL_SECONDS, JSON.stringify(response));
+        const response = await withRetry(() => this.callProvider(provider, request));
+        await this.redis.setex(cacheKey, CACHE_TTL_SECONDS, JSON.stringify(response)).catch(() => null);
         return response;
       } catch (err) {
         lastError = err as Error;
-        this.logger.warn(`Provider ${provider} failed: ${lastError.message}`);
+        this.logger.warn(`Provider ${provider} failed after retries: ${lastError.message}`);
       }
     }
 
@@ -55,7 +75,7 @@ export class AIProviderRouter {
   }
 
   async *generateStream(request: AIRequest): AsyncGenerator<string> {
-    const providers: AIProvider[] = ['claude', 'openai', 'groq'];
+    const providers: Provider[] = ['groq', 'gemini'];
     let lastError: Error | null = null;
 
     for (const provider of providers) {
@@ -71,70 +91,80 @@ export class AIProviderRouter {
     throw lastError ?? new Error('All AI stream providers failed');
   }
 
-  private async callProvider(provider: AIProvider, request: AIRequest): Promise<AIResponse> {
-    const model = this.getModel(provider);
-    const messages = request.messages.filter((m) => m.role !== 'system');
-    const systemMsg = request.messages.find((m) => m.role === 'system');
-
-    if (provider === 'claude') {
-      const res = await this.anthropic.messages.create({
-        model,
-        max_tokens: request.maxTokens ?? 4096,
-        system: systemMsg?.content,
-        messages: messages.map((m) => ({ role: m.role as 'user' | 'assistant', content: m.content })),
-      });
-      const content = res.content[0];
-      const text = content?.type === 'text' ? content.text : '';
-      return {
-        content: text,
-        provider,
-        model,
-        tokensUsed: res.usage.input_tokens + res.usage.output_tokens,
-        cached: false,
-      };
+  private async callProvider(provider: Provider, request: AIRequest): Promise<AIResponse> {
+    if (provider === 'groq') {
+      return this.callGroq(request);
     }
+    return this.callGemini(request);
+  }
 
-    const client = provider === 'groq' ? this.groq : this.openai;
-    const res = await client.chat.completions.create({
+  private async callGroq(request: AIRequest): Promise<AIResponse> {
+    const model = this.config.get<string>('GROQ_MODEL', 'llama-3.3-70b-versatile');
+    const res = await this.groq.chat.completions.create({
       model,
       max_tokens: request.maxTokens ?? 4096,
+      temperature: request.temperature ?? 0.2,
       messages: request.messages.map((m) => ({ role: m.role, content: m.content })),
     });
 
     return {
       content: res.choices[0]?.message?.content ?? '',
-      provider,
+      provider: 'groq',
       model,
       tokensUsed: res.usage?.total_tokens,
       cached: false,
     };
   }
 
-  private async *streamProvider(provider: AIProvider, request: AIRequest): AsyncGenerator<string> {
-    const model = this.getModel(provider);
-    const messages = request.messages.filter((m) => m.role !== 'system');
+  private async callGemini(request: AIRequest): Promise<AIResponse> {
+    const modelName = this.config.get<string>('GEMINI_MODEL', 'gemini-2.0-flash-exp');
     const systemMsg = request.messages.find((m) => m.role === 'system');
+    const userMsgs = request.messages.filter((m) => m.role !== 'system');
 
-    if (provider === 'claude') {
-      const stream = await this.anthropic.messages.stream({
-        model,
-        max_tokens: request.maxTokens ?? 4096,
-        system: systemMsg?.content,
-        messages: messages.map((m) => ({ role: m.role as 'user' | 'assistant', content: m.content })),
-      });
+    const model = this.gemini.getGenerativeModel({
+      model: modelName,
+      systemInstruction: systemMsg?.content,
+    });
 
-      for await (const chunk of stream) {
-        if (chunk.type === 'content_block_delta' && chunk.delta.type === 'text_delta') {
-          yield chunk.delta.text;
-        }
-      }
-      return;
+    const contents = userMsgs.map((m) => ({
+      role: m.role === 'assistant' ? 'model' : 'user',
+      parts: [{ text: m.content }],
+    }));
+
+    const result = await model.generateContent({
+      contents,
+      generationConfig: {
+        maxOutputTokens: request.maxTokens ?? 4096,
+        temperature: request.temperature ?? 0.2,
+      },
+    });
+
+    const text = result.response.text();
+    const usage = result.response.usageMetadata;
+
+    return {
+      content: text,
+      provider: 'gemini',
+      model: modelName,
+      tokensUsed: (usage?.promptTokenCount ?? 0) + (usage?.candidatesTokenCount ?? 0),
+      cached: false,
+    };
+  }
+
+  private async *streamProvider(provider: Provider, request: AIRequest): AsyncGenerator<string> {
+    if (provider === 'groq') {
+      yield* this.streamGroq(request);
+    } else {
+      yield* this.streamGemini(request);
     }
+  }
 
-    const client = provider === 'groq' ? this.groq : this.openai;
-    const stream = await client.chat.completions.create({
+  private async *streamGroq(request: AIRequest): AsyncGenerator<string> {
+    const model = this.config.get<string>('GROQ_MODEL', 'llama-3.3-70b-versatile');
+    const stream = await this.groq.chat.completions.create({
       model,
       max_tokens: request.maxTokens ?? 4096,
+      temperature: request.temperature ?? 0.2,
       messages: request.messages.map((m) => ({ role: m.role, content: m.content })),
       stream: true,
     });
@@ -145,22 +175,34 @@ export class AIProviderRouter {
     }
   }
 
-  private getModel(provider: AIProvider): string {
-    const models: Record<AIProvider, string> = {
-      claude: this.config.get('CLAUDE_MODEL', 'claude-haiku-4-5-20251001'),
-      openai: this.config.get('OPENAI_MODEL', 'gpt-4o-mini'),
-      groq: this.config.get('GROQ_MODEL', 'llama-3.1-8b-instant'),
-      openclaw: this.config.get('OPENCLAW_MODEL', 'openclaw-v1'),
-      mock: 'mock-model',
-    };
-    return models[provider] ?? models.claude;
+  private async *streamGemini(request: AIRequest): AsyncGenerator<string> {
+    const modelName = this.config.get<string>('GEMINI_MODEL', 'gemini-2.0-flash-exp');
+    const systemMsg = request.messages.find((m) => m.role === 'system');
+    const userMsgs = request.messages.filter((m) => m.role !== 'system');
+
+    const model = this.gemini.getGenerativeModel({
+      model: modelName,
+      systemInstruction: systemMsg?.content,
+    });
+
+    const contents = userMsgs.map((m) => ({
+      role: m.role === 'assistant' ? 'model' : 'user',
+      parts: [{ text: m.content }],
+    }));
+
+    const result = await model.generateContentStream({ contents });
+
+    for await (const chunk of result.stream) {
+      const text = chunk.text();
+      if (text) yield text;
+    }
   }
 
   private buildCacheKey(request: AIRequest): string {
     const hash = createHash('sha256')
       .update(JSON.stringify(request.messages))
       .digest('hex')
-      .substring(0, 16);
+      .slice(0, 20);
     return `ai:gen:${hash}`;
   }
 }

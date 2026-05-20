@@ -35,12 +35,24 @@ export const metadata: Metadata = {
 };
 
 const adsenseId = process.env.NEXT_PUBLIC_ADSENSE_ID;
+const ga4Id = process.env.NEXT_PUBLIC_GA4_ID;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={inter.variable}>
       <head>
         <link rel="alternate" hrefLang="en-us" href={process.env.NEXT_PUBLIC_BASE_URL ?? 'https://aifreetools.com'} />
+        {ga4Id && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${ga4Id}`}
+              strategy="afterInteractive"
+            />
+            <Script id="ga4-init" strategy="afterInteractive">
+              {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${ga4Id}',{page_path:window.location.pathname});`}
+            </Script>
+          </>
+        )}
         {adsenseId && !adsenseId.includes('XXXXXXXX') && (
           <Script
             async

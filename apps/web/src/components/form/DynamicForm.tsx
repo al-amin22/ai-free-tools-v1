@@ -19,7 +19,7 @@ export function DynamicForm({ schema, defaultState, onSubmit, isSubmitting, onRe
     const init: Record<string, unknown> = {};
     for (const field of schema.fields) {
       if (field.defaultValue !== undefined) init[field.id] = field.defaultValue;
-      else if (field.type === 'checkbox') init[field.id] = false;
+      else if (field.type === 'checkbox' || field.type === 'toggle') init[field.id] = false;
       else init[field.id] = '';
     }
     if (defaultState) init['state'] = defaultState;
@@ -75,7 +75,14 @@ export function DynamicForm({ schema, defaultState, onSubmit, isSubmitting, onRe
           disabled={isSubmitting}
           className="flex-1 bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
-          {isSubmitting ? 'Generating...' : 'Generate'}
+          {isSubmitting ? (
+            <span className="flex items-center justify-center gap-2">
+              <span className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full" />
+              Generating...
+            </span>
+          ) : (
+            'Generate'
+          )}
         </button>
         {onReset && (
           <button
@@ -100,7 +107,7 @@ interface FieldRendererProps {
 
 function FieldRenderer({ field, value, onChange, defaultState }: FieldRendererProps) {
   const baseClass =
-    'w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent';
+    'w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors';
 
   const label = (
     <label htmlFor={field.id} className="block text-sm font-medium text-gray-700 mb-1">
@@ -147,13 +154,45 @@ function FieldRenderer({ field, value, onChange, defaultState }: FieldRendererPr
             onChange={(e) => onChange(e.target.value)}
             placeholder={field.placeholder}
             required={field.required}
-            rows={field.rows ?? 3}
+            rows={field.rows ?? 4}
             maxLength={field.maxLength}
             className={baseClass}
           />
+          {field.maxLength && (
+            <p className="text-xs text-gray-400 mt-1 text-right">
+              {String(value ?? '').length}/{field.maxLength}
+            </p>
+          )}
           {field.helpText && <p className="text-xs text-gray-500 mt-1">{field.helpText}</p>}
         </div>
       );
+
+    case 'toggle': {
+      const checked = Boolean(value);
+      return (
+        <div className="flex items-center justify-between py-1">
+          <label htmlFor={field.id} className="text-sm font-medium text-gray-700 cursor-pointer select-none">
+            {field.label}
+          </label>
+          <button
+            type="button"
+            id={field.id}
+            role="switch"
+            aria-checked={checked}
+            onClick={() => onChange(!checked)}
+            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+              checked ? 'bg-blue-600' : 'bg-gray-200'
+            }`}
+          >
+            <span
+              className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-sm transition-transform ${
+                checked ? 'translate-x-6' : 'translate-x-1'
+              }`}
+            />
+          </button>
+        </div>
+      );
+    }
 
     case 'checkbox':
       return (
@@ -163,9 +202,9 @@ function FieldRenderer({ field, value, onChange, defaultState }: FieldRendererPr
             id={field.id}
             checked={Boolean(value)}
             onChange={(e) => onChange(e.target.checked)}
-            className="h-4 w-4 rounded border-gray-300 text-blue-600"
+            className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
           />
-          <label htmlFor={field.id} className="text-sm text-gray-700">
+          <label htmlFor={field.id} className="text-sm text-gray-700 cursor-pointer">
             {field.label}
           </label>
         </div>
@@ -190,6 +229,87 @@ function FieldRenderer({ field, value, onChange, defaultState }: FieldRendererPr
         </div>
       );
 
+    case 'currency':
+      return (
+        <div>
+          {label}
+          <div className="relative">
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm font-medium">$</span>
+            <input
+              type="number"
+              id={field.id}
+              value={String(value ?? '')}
+              onChange={(e) => onChange(e.target.value)}
+              placeholder={field.placeholder ?? '0.00'}
+              required={field.required}
+              min={field.min ?? 0}
+              max={field.max}
+              step="0.01"
+              className={`${baseClass} pl-7`}
+            />
+          </div>
+          {field.helpText && <p className="text-xs text-gray-500 mt-1">{field.helpText}</p>}
+        </div>
+      );
+
+    case 'percentage':
+      return (
+        <div>
+          {label}
+          <div className="relative">
+            <input
+              type="number"
+              id={field.id}
+              value={String(value ?? '')}
+              onChange={(e) => onChange(e.target.value)}
+              placeholder={field.placeholder ?? '0'}
+              required={field.required}
+              min={field.min ?? 0}
+              max={field.max ?? 100}
+              step="0.01"
+              className={`${baseClass} pr-8`}
+            />
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm font-medium">%</span>
+          </div>
+          {field.helpText && <p className="text-xs text-gray-500 mt-1">{field.helpText}</p>}
+        </div>
+      );
+
+    case 'email':
+      return (
+        <div>
+          {label}
+          <input
+            type="email"
+            id={field.id}
+            value={String(value ?? '')}
+            onChange={(e) => onChange(e.target.value)}
+            placeholder={field.placeholder ?? 'email@example.com'}
+            required={field.required}
+            maxLength={field.maxLength}
+            className={baseClass}
+          />
+          {field.helpText && <p className="text-xs text-gray-500 mt-1">{field.helpText}</p>}
+        </div>
+      );
+
+    case 'phone':
+      return (
+        <div>
+          {label}
+          <input
+            type="tel"
+            id={field.id}
+            value={String(value ?? '')}
+            onChange={(e) => onChange(e.target.value)}
+            placeholder={field.placeholder ?? '(555) 000-0000'}
+            required={field.required}
+            className={baseClass}
+          />
+          {field.helpText && <p className="text-xs text-gray-500 mt-1">{field.helpText}</p>}
+        </div>
+      );
+
     case 'radio': {
       const opts = field.options ?? [];
       return (
@@ -205,7 +325,7 @@ function FieldRenderer({ field, value, onChange, defaultState }: FieldRendererPr
                   checked={String(value) === opt.value}
                   onChange={() => onChange(opt.value)}
                   required={field.required}
-                  className="h-4 w-4 text-blue-600 border-gray-300"
+                  className="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
                 />
                 <span className="text-sm text-gray-700">{opt.label}</span>
               </label>
@@ -226,22 +346,18 @@ function FieldRenderer({ field, value, onChange, defaultState }: FieldRendererPr
           {label}
           <div className="flex flex-wrap gap-2 mt-1">
             {opts.map((opt) => (
-              <label
+              <button
                 key={opt.value}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-sm cursor-pointer transition-colors ${
+                type="button"
+                onClick={() => toggle(opt.value)}
+                className={`px-3 py-1.5 rounded-full border text-sm transition-colors ${
                   selected.includes(opt.value)
                     ? 'bg-blue-600 text-white border-blue-600'
-                    : 'bg-white text-gray-700 border-gray-300 hover:border-blue-400'
+                    : 'bg-white text-gray-700 border-gray-300 hover:border-blue-400 hover:text-blue-600'
                 }`}
               >
-                <input
-                  type="checkbox"
-                  className="sr-only"
-                  checked={selected.includes(opt.value)}
-                  onChange={() => toggle(opt.value)}
-                />
                 {opt.label}
-              </label>
+              </button>
             ))}
           </div>
           {field.helpText && <p className="text-xs text-gray-500 mt-1">{field.helpText}</p>}
@@ -261,6 +377,7 @@ function FieldRenderer({ field, value, onChange, defaultState }: FieldRendererPr
             required={field.required}
             className={baseClass}
           />
+          {field.helpText && <p className="text-xs text-gray-500 mt-1">{field.helpText}</p>}
         </div>
       );
 

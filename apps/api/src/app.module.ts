@@ -8,6 +8,7 @@ import { ExportModule } from './modules/export/export.module';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { HealthModule } from './modules/health/health.module';
+import { ArticlesModule } from './modules/articles/articles.module';
 import { DatabaseModule } from './database/database.module';
 
 @Module({
@@ -45,6 +46,7 @@ import { DatabaseModule } from './database/database.module';
     AnalyticsModule,
     AuthModule,
     HealthModule,
+    ArticlesModule,
   ],
 })
 export class AppModule {}

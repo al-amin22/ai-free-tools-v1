@@ -1,4 +1,4 @@
-export type AIProvider = 'openclaw' | 'claude' | 'openai' | 'groq' | 'mock';
+export type AIProvider = 'groq' | 'gemini' | 'mock';
 
 export interface AIRequest {
   provider?: AIProvider;

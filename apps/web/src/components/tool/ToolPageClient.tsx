@@ -9,7 +9,7 @@ import { useGeneration } from '@aifreetools/ui-components';
 interface State {
   value: string;
   label: string;
-  code: string;
+  code?: string;
 }
 
 interface Props {
@@ -21,7 +21,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001/api';
 
 export function ToolPageClient({ tool, state }: Props) {
   const [submitted, setSubmitted] = useState(false);
-  const { status, output, error, generate, reset } = useGeneration({ apiEndpoint: API_URL });
+  const { status, output, error, generationId, generate, reset } = useGeneration({ apiEndpoint: API_URL });
 
   async function handleSubmit(values: Record<string, unknown>) {
     setSubmitted(true);
@@ -77,6 +77,7 @@ export function ToolPageClient({ tool, state }: Props) {
             output={output}
             error={error}
             toolName={tool.name}
+            generationId={generationId}
           />
         </div>
       </div>

@@ -29,6 +29,7 @@ export interface GenerationState {
   status: GenerationStatus;
   output: string;
   error?: string;
+  generationId?: string;
   tokensUsed?: number;
   provider?: string;
   cached?: boolean;

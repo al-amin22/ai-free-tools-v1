@@ -75,10 +75,11 @@ export function useGeneration({ apiEndpoint }: UseGenerationOptions) {
 
           setState((prev) => ({ ...prev, status: 'done' }));
         } else {
-          const data = await response.json() as { output?: string; cached?: boolean; provider?: string; tokensUsed?: number };
+          const data = await response.json() as { output?: string; generationId?: string; cached?: boolean; provider?: string; tokensUsed?: number };
           setState({
             status: 'done',
             output: data.output ?? '',
+            generationId: data.generationId,
             cached: data.cached,
             provider: data.provider,
             tokensUsed: data.tokensUsed,

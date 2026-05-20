@@ -9,13 +9,13 @@ import { PrismaService } from '../../database/prisma.service';
 import { v4 as uuidv4 } from 'uuid';
 
 const CATEGORY_SYSTEM_MAP: Record<string, keyof typeof SYSTEM_PROMPTS> = {
-  legal: 'LEGAL',
-  'real-estate': 'LEGAL',
-  hr: 'HR',
-  finance: 'FINANCE',
-  business: 'BUSINESS',
-  copywriting: 'COPYWRITING',
-  bonus: 'LEGAL',
+  'legal-documents': 'LEGAL',
+  'real-estate': 'REAL_ESTATE',
+  'hr-recruitment': 'HR',
+  'finance-tax': 'FINANCE',
+  'small-business': 'BUSINESS',
+  'copywriting-content': 'COPYWRITING',
+  'high-intent-legal': 'LEGAL',
 };
 
 @Injectable()
@@ -124,15 +124,22 @@ export class ToolsService {
 
   private buildMessages(tool: ToolConfig, inputs: Record<string, unknown>) {
     const systemKey = CATEGORY_SYSTEM_MAP[tool.category] ?? 'GENERAL';
-    const systemPrompt = SYSTEM_PROMPTS[systemKey];
+    const vars = inputs as Record<string, unknown> & { state?: string; stateName?: string };
 
-    const userStep = tool.promptConfig.steps[0];
-    if (!userStep) throw new Error(`No prompt steps for tool ${tool.id}`);
+    // Prefer tool-specific system prompt; fall back to category default
+    const systemStep = tool.promptConfig.steps.find((s) => s.role === 'system');
+    const systemContent = systemStep
+      ? buildPrompt(systemStep.template, vars)
+      : SYSTEM_PROMPTS[systemKey];
 
-    const userContent = buildPrompt(userStep.template, inputs as Record<string, unknown> & { state?: string; stateName?: string });
+    // Find the user turn (the actual generation instruction)
+    const userStep = tool.promptConfig.steps.find((s) => s.role === 'user');
+    if (!userStep) throw new Error(`No user prompt step found for tool ${tool.id}`);
+
+    const userContent = buildPrompt(userStep.template, vars);
 
     return [
-      { role: 'system' as const, content: systemPrompt },
+      { role: 'system' as const, content: systemContent },
       { role: 'user' as const, content: userContent },
     ];
   }
