@@ -52,15 +52,19 @@ export function DynamicForm({ schema, defaultState, onSubmit, isSubmitting, onRe
         <fieldset key={group.id} className="border border-gray-200 rounded-lg p-4">
           <legend className="text-sm font-semibold text-gray-700 px-2">{group.title}</legend>
           <div className="space-y-4 mt-2">
-            {group.fields.filter(isVisible).map((field) => (
-              <FieldRenderer
-                key={field.id}
-                field={field}
-                value={values[field.id]}
-                onChange={(v) => setValue(field.id, v)}
-                defaultState={defaultState}
-              />
-            ))}
+            {group.fieldIds
+              .map((id) => fieldMap[id])
+              .filter((f): f is FormField => f !== undefined)
+              .filter(isVisible)
+              .map((field) => (
+                <FieldRenderer
+                  key={field.id}
+                  field={field}
+                  value={values[field.id]}
+                  onChange={(v) => setValue(field.id, v)}
+                  defaultState={defaultState}
+                />
+              ))}
           </div>
         </fieldset>
       ))}
@@ -185,6 +189,65 @@ function FieldRenderer({ field, value, onChange, defaultState }: FieldRendererPr
           {field.helpText && <p className="text-xs text-gray-500 mt-1">{field.helpText}</p>}
         </div>
       );
+
+    case 'radio': {
+      const opts = field.options ?? [];
+      return (
+        <div>
+          {label}
+          <div className="flex flex-wrap gap-3 mt-1">
+            {opts.map((opt) => (
+              <label key={opt.value} className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name={field.id}
+                  value={opt.value}
+                  checked={String(value) === opt.value}
+                  onChange={() => onChange(opt.value)}
+                  required={field.required}
+                  className="h-4 w-4 text-blue-600 border-gray-300"
+                />
+                <span className="text-sm text-gray-700">{opt.label}</span>
+              </label>
+            ))}
+          </div>
+          {field.helpText && <p className="text-xs text-gray-500 mt-1">{field.helpText}</p>}
+        </div>
+      );
+    }
+
+    case 'multiselect': {
+      const opts = field.options ?? [];
+      const selected = Array.isArray(value) ? (value as string[]) : [];
+      const toggle = (v: string) =>
+        onChange(selected.includes(v) ? selected.filter((x) => x !== v) : [...selected, v]);
+      return (
+        <div>
+          {label}
+          <div className="flex flex-wrap gap-2 mt-1">
+            {opts.map((opt) => (
+              <label
+                key={opt.value}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-sm cursor-pointer transition-colors ${
+                  selected.includes(opt.value)
+                    ? 'bg-blue-600 text-white border-blue-600'
+                    : 'bg-white text-gray-700 border-gray-300 hover:border-blue-400'
+                }`}
+              >
+                <input
+                  type="checkbox"
+                  className="sr-only"
+                  checked={selected.includes(opt.value)}
+                  onChange={() => toggle(opt.value)}
+                />
+                {opt.label}
+              </label>
+            ))}
+          </div>
+          {field.helpText && <p className="text-xs text-gray-500 mt-1">{field.helpText}</p>}
+        </div>
+      );
+    }
 
     case 'date':
       return (
