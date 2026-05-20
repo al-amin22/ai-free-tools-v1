@@ -1,0 +1,143 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  tier         UserTier @default(FREE)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  generations ToolGeneration[]
+  exports     Export[]
+
+  @@map("users")
+}
+
+enum UserTier {
+  FREE
+  PREMIUM
+  BUSINESS
+  ENTERPRISE
+  ADMIN
+}
+
+model ToolGeneration {
+  id           String           @id @default(cuid())
+  toolId       String
+  userId       String?
+  sessionId    String
+  inputs       Json
+  output       String?          @db.Text
+  status       GenerationStatus @default(PENDING)
+  provider     String?
+  tokensUsed   Int?
+  cached       Boolean          @default(false)
+  errorMessage String?
+  durationMs   Int?
+  createdAt    DateTime         @default(now())
+  completedAt  DateTime?
+
+  user    User?   @relation(fields: [userId], references: [id])
+  exports Export[]
+
+  @@index([toolId])
+  @@index([userId])
+  @@index([sessionId])
+  @@index([createdAt])
+  @@map("tool_generations")
+}
+
+enum GenerationStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  CACHED
+}
+
+model Export {
+  id           String       @id @default(cuid())
+  generationId String
+  userId       String?
+  format       ExportFormat
+  fileUrl      String?
+  status       ExportStatus @default(PENDING)
+  createdAt    DateTime     @default(now())
+
+  generation ToolGeneration @relation(fields: [generationId], references: [id])
+  user       User?          @relation(fields: [userId], references: [id])
+
+  @@index([generationId])
+  @@map("exports")
+}
+
+enum ExportFormat {
+  PDF
+  DOCX
+  TXT
+  MD
+}
+
+enum ExportStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+model SeoPage {
+  id          String      @id @default(cuid())
+  toolId      String
+  stateCode   String?
+  pageType    SeoPageType
+  title       String
+  description String
+  content     String?     @db.Text
+  published   Boolean     @default(false)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@unique([toolId, stateCode, pageType])
+  @@index([toolId])
+  @@map("seo_pages")
+}
+
+enum SeoPageType {
+  TOOL
+  STATE
+  LONGTAIL
+  BLOG
+}
+
+model Faq {
+  id       String @id @default(cuid())
+  toolId   String
+  question String
+  answer   String @db.Text
+  order    Int    @default(0)
+
+  @@index([toolId])
+  @@map("faqs")
+}
+
+model AnalyticsEvent {
+  id        String   @id @default(cuid())
+  eventType String
+  toolId    String?
+  sessionId String?
+  userId    String?
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  @@index([eventType, createdAt])
+  @@index([toolId, createdAt])
+  @@map("analytics_events")
+}
