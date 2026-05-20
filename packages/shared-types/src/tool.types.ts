@@ -43,17 +43,29 @@ export interface FieldValidation {
   message?: string;
 }
 
+export interface FieldConditional {
+  dependsOn: string;
+  showWhen: string | string[];
+}
+
 export interface FormField {
   id: string;
   type: FieldType;
   label: string;
   placeholder?: string;
   description?: string;
+  helpText?: string;
   required?: boolean;
   validation?: FieldValidation;
   options?: FieldOption[];
   defaultValue?: unknown;
-  // Conditional rendering
+  maxLength?: number;
+  minLength?: number;
+  min?: number;
+  max?: number;
+  rows?: number;
+  conditional?: FieldConditional;
+  // Legacy conditional rendering
   showWhen?: {
     field: string;
     operator: 'equals' | 'notEquals' | 'includes' | 'notEmpty';
@@ -72,7 +84,7 @@ export interface FormGroup {
 
 export interface FormSchema {
   fields: FormField[];
-  groups?: FormGroup[];
+  groups: FormGroup[];
 }
 
 export interface PromptStep {
@@ -104,12 +116,18 @@ export interface ExportConfig {
   };
 }
 
+export interface FAQItem {
+  question: string;
+  answer: string;
+}
+
 export interface ToolSEOConfig {
   titleTemplate: string;
   descriptionTemplate: string;
   primaryKeyword: string;
   keywords: string[];
   faqCount: number;
+  faqs?: FAQItem[];
   generateStatePages: boolean;
   articleTopics: string[];
   relatedTools: string[];

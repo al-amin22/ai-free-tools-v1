@@ -2,10 +2,6 @@
   "name": "aifreetools",
   "version": "1.0.0",
   "private": true,
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",
@@ -24,7 +20,7 @@
   },
   "engines": {
     "node": ">=20.0.0",
-    "npm": ">=10.0.0"
+    "pnpm": ">=9.0.0"
   },
-  "packageManager": "npm@10.9.0"
+  "packageManager": "pnpm@9.15.0"
 }

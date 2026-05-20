@@ -16,9 +16,9 @@ export const BUSINESS_PROMPTS = {
 - Unique Value Proposition: {{uvp}}
 
 **Financials:**
-- Startup Capital Needed: ${{startupCapital}}
+- Startup Capital Needed: \$\{\{startupCapital}}
 - Revenue Model: {{revenueModel}}
-- 12-month Revenue Target: ${{revenueTarget}}
+- 12-month Revenue Target: \$\{\{revenueTarget}}
 
 **Team:**
 {{teamInfo}}
@@ -50,11 +50,11 @@ Generate a comprehensive SWOT analysis with 5-7 items per quadrant, strategic im
 - Business Name: {{businessName}}
 - Industry: {{industry}}
 - Target Market: {{targetMarket}}
-- Marketing Budget: ${{marketingBudget}}/month
+- Marketing Budget: \$\{\{marketingBudget}}/month
 - Primary Goal: {{primaryGoal}}
 
 **Current Situation:**
-- Current Monthly Revenue: ${{currentRevenue}}
+- Current Monthly Revenue: \$\{\{currentRevenue}}
 - Current Channels: {{currentChannels}}
 - Main Competitors: {{competitors}}
 

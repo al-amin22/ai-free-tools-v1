@@ -1,4 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { PrismaService } from '../../database/prisma.service';
 
 @Injectable()
@@ -20,7 +21,7 @@ export class AnalyticsService {
           toolId: data?.toolId,
           sessionId: data?.sessionId,
           userId: data?.userId,
-          metadata: data?.metadata,
+          metadata: data?.metadata as Prisma.InputJsonValue | undefined,
         },
       });
     } catch (err) {

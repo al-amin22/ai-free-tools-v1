@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException, Logger } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { getToolById, ALL_TOOLS } from '@aifreetools/tool-configs';
 import { buildPrompt } from '@aifreetools/ai-prompts';
 import { SYSTEM_PROMPTS } from '@aifreetools/ai-prompts';
@@ -48,7 +49,7 @@ export class ToolsService {
       data: {
         toolId,
         sessionId: sid,
-        inputs,
+        inputs: inputs as Prisma.InputJsonValue,
         status: 'PROCESSING',
       },
     });
@@ -93,7 +94,7 @@ export class ToolsService {
     const sid = sessionId ?? uuidv4();
 
     const record = await this.prisma.toolGeneration.create({
-      data: { toolId, sessionId: sid, inputs, status: 'PROCESSING' },
+      data: { toolId, sessionId: sid, inputs: inputs as Prisma.InputJsonValue, status: 'PROCESSING' },
     });
 
     yield { generationId: record.id };

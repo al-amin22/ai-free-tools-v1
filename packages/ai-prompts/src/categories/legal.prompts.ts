@@ -83,8 +83,8 @@ Generate a firm, professional cease and desist letter with legal citations where
 **Property Details:**
 - Property Address: {{propertyAddress}}
 - Property Type: {{propertyType}}
-- Monthly Rent: ${{monthlyRent}}
-- Security Deposit: ${{securityDeposit}}
+- Monthly Rent: \$\{\{monthlyRent}}
+- Security Deposit: \$\{\{securityDeposit}}
 
 **Lease Terms:**
 - Lease Start: {{leaseStart}}

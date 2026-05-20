@@ -151,6 +151,7 @@ export class AIProviderRouter {
       openai: this.config.get('OPENAI_MODEL', 'gpt-4o-mini'),
       groq: this.config.get('GROQ_MODEL', 'llama-3.1-8b-instant'),
       openclaw: this.config.get('OPENCLAW_MODEL', 'openclaw-v1'),
+      mock: 'mock-model',
     };
     return models[provider] ?? models.claude;
   }

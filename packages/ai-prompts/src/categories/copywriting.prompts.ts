@@ -90,7 +90,7 @@ Write a complete blog post with: SEO-optimized title (include keyword), compelli
 **Product Details:**
 - Product Name: {{productName}}
 - Category: {{productCategory}}
-- Price: ${{price}}
+- Price: \$\{\{price}}
 - Key Features: {{keyFeatures}}
 - Materials/Specs: {{specifications}}
 - Use Cases: {{useCases}}

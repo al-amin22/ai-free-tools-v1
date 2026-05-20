@@ -64,7 +64,7 @@ export const CATEGORY_4_TOOLS: ToolConfig[] = [
       version: '1.0.0',
       steps: [
         { id: 'system', role: 'system', template: 'You are a CPA specializing in freelancer and self-employment taxes. Provide accurate tax estimates with practical deduction advice. Always note this is an estimate and recommend consulting a tax professional.' },
-        { id: 'generate', role: 'user', template: `Estimate taxes for freelancer:\n\nFreelance Income: ${{annualIncome}}\nOther Income: ${{otherIncome}}\nBusiness Expenses: ${{businessExpenses}}\nFiling: {{filingStatus}}\nState: {{state}}\nHome Office: {{hasHomeOffice}}\nRetirement Plan: {{hasRetirementPlan}}\nHealth Insurance: ${{healthInsurance}}\n\nProvide:\n1. Gross income, deductions, taxable income\n2. Federal income tax estimate\n3. Self-employment tax (15.3%)\n4. State tax estimate for {{state}}\n5. Total estimated tax\n6. Quarterly payment amounts (Q1-Q4)\n7. Effective tax rate\n8. Top 5 deductions they should maximize\n9. Retirement contribution recommendation\n10. Important deadlines\n\nShow all calculations clearly.` },
+        { id: 'generate', role: 'user', template: `Estimate taxes for freelancer:\n\nFreelance Income: \$\{\{annualIncome}}\nOther Income: \$\{\{otherIncome}}\nBusiness Expenses: \$\{\{businessExpenses}}\nFiling: {{filingStatus}}\nState: {{state}}\nHome Office: {{hasHomeOffice}}\nRetirement Plan: {{hasRetirementPlan}}\nHealth Insurance: \$\{\{healthInsurance}}\n\nProvide:\n1. Gross income, deductions, taxable income\n2. Federal income tax estimate\n3. Self-employment tax (15.3%)\n4. State tax estimate for {{state}}\n5. Total estimated tax\n6. Quarterly payment amounts (Q1-Q4)\n7. Effective tax rate\n8. Top 5 deductions they should maximize\n9. Retirement contribution recommendation\n10. Important deadlines\n\nShow all calculations clearly.` },
       ],
       outputFormat: 'text', maxTokens: 2000, temperature: 0.2,
     },
@@ -99,7 +99,7 @@ export const CATEGORY_4_TOOLS: ToolConfig[] = [
       version: '1.0.0',
       steps: [
         { id: 'system', role: 'system', template: 'You are a certified financial planner. Create practical, personalized budget plans that help people achieve their financial goals.' },
-        { id: 'generate', role: 'user', template: `Create a monthly budget plan:\n\nIncome: ${{monthlyIncome}} + ${{additionalIncome}}\nHousing: ${{housing}}\nTransportation: ${{transportation}}\nFood: ${{food}}\nUtilities: ${{utilities}}\nInsurance: ${{insurance}}\nSubscriptions: ${{subscriptions}}\nDebt Payments: ${{debtPayments}}\nSavings Goal: ${{savingsGoal}}\nGoal: {{financialGoal}}\n\nProvide:\n1. Complete budget breakdown (income, all expenses, surplus/deficit)\n2. Budget ratios (housing %, savings %, etc.) vs. 50/30/20 rule\n3. Surplus or deficit analysis\n4. Top 3 areas to reduce spending\n5. Actionable plan to achieve {{financialGoal}}\n6. Monthly and yearly projections toward goal\n7. Emergency fund status and recommendation\n8. Priority action list` },
+        { id: 'generate', role: 'user', template: `Create a monthly budget plan:\n\nIncome: \$\{\{monthlyIncome}} + \$\{\{additionalIncome}}\nHousing: \$\{\{housing}}\nTransportation: \$\{\{transportation}}\nFood: \$\{\{food}}\nUtilities: \$\{\{utilities}}\nInsurance: \$\{\{insurance}}\nSubscriptions: \$\{\{subscriptions}}\nDebt Payments: \$\{\{debtPayments}}\nSavings Goal: \$\{\{savingsGoal}}\nGoal: {{financialGoal}}\n\nProvide:\n1. Complete budget breakdown (income, all expenses, surplus/deficit)\n2. Budget ratios (housing %, savings %, etc.) vs. 50/30/20 rule\n3. Surplus or deficit analysis\n4. Top 3 areas to reduce spending\n5. Actionable plan to achieve {{financialGoal}}\n6. Monthly and yearly projections toward goal\n7. Emergency fund status and recommendation\n8. Priority action list` },
       ],
       outputFormat: 'text', maxTokens: 2000, temperature: 0.3,
     },
@@ -122,7 +122,7 @@ export const CATEGORY_4_TOOLS: ToolConfig[] = [
       version: '1.0.0',
       steps: [
         { id: 'system', role: 'system', template: 'You are a debt counselor and financial planner. Calculate debt payoff scenarios with precision and provide motivating, practical advice.' },
-        { id: 'generate', role: 'user', template: `Calculate debt payoff plan:\n\nDebts:\n{{debts}}\nExtra Payment: ${{extraPayment}}/month\nStrategy: {{strategy}}\n\nProvide:\n1. Current debt summary (total, total monthly minimums, total interest if minimums only)\n2. {{strategy}} payoff order with reasoning\n3. Month-by-month payoff sequence\n4. Payoff timeline with extra payment\n5. Total interest saved vs. minimums-only\n6. Debt-free date\n7. Comparison of both strategies\n8. Practical tips to find extra money to accelerate payoff\n9. Motivation: what you can do with that money when debt-free` },
+        { id: 'generate', role: 'user', template: `Calculate debt payoff plan:\n\nDebts:\n{{debts}}\nExtra Payment: \$\{\{extraPayment}}/month\nStrategy: {{strategy}}\n\nProvide:\n1. Current debt summary (total, total monthly minimums, total interest if minimums only)\n2. {{strategy}} payoff order with reasoning\n3. Month-by-month payoff sequence\n4. Payoff timeline with extra payment\n5. Total interest saved vs. minimums-only\n6. Debt-free date\n7. Comparison of both strategies\n8. Practical tips to find extra money to accelerate payoff\n9. Motivation: what you can do with that money when debt-free` },
       ],
       outputFormat: 'text', maxTokens: 2000, temperature: 0.2,
     },
@@ -152,7 +152,7 @@ export const CATEGORY_4_TOOLS: ToolConfig[] = [
       version: '1.0.0',
       steps: [
         { id: 'system', role: 'system', template: 'You are a tax professional and compensation analyst. Compare W2 vs 1099 income scenarios with full tax implications and real total compensation.' },
-        { id: 'generate', role: 'user', template: `Compare W2 vs 1099:\n\nW2 Salary: ${{w2Salary}}\nW2 Benefits: ${{w2Benefits}}\n1099 Income: ${{contractorRate}}\n1099 Expenses: ${{contractorExpenses}}\nFiling: {{filingStatus}}\nState: {{state}}\n\nCompare:\n1. W2 total comp (salary + benefits)\n2. 1099 true income after expenses\n3. W2 tax burden (FICA, federal, state)\n4. 1099 tax burden (SE tax, federal, state)\n5. W2 net take-home vs 1099 net take-home\n6. Break-even rate (what 1099 rate equals W2 comp)\n7. Recommendation with reasoning\n8. Non-financial factors to consider (stability, flexibility, etc.)` },
+        { id: 'generate', role: 'user', template: `Compare W2 vs 1099:\n\nW2 Salary: \$\{\{w2Salary}}\nW2 Benefits: \$\{\{w2Benefits}}\n1099 Income: \$\{\{contractorRate}}\n1099 Expenses: \$\{\{contractorExpenses}}\nFiling: {{filingStatus}}\nState: {{state}}\n\nCompare:\n1. W2 total comp (salary + benefits)\n2. 1099 true income after expenses\n3. W2 tax burden (FICA, federal, state)\n4. 1099 tax burden (SE tax, federal, state)\n5. W2 net take-home vs 1099 net take-home\n6. Break-even rate (what 1099 rate equals W2 comp)\n7. Recommendation with reasoning\n8. Non-financial factors to consider (stability, flexibility, etc.)` },
       ],
       outputFormat: 'text', maxTokens: 1500, temperature: 0.2,
     },
@@ -181,7 +181,7 @@ export const CATEGORY_4_TOOLS: ToolConfig[] = [
       version: '1.0.0',
       steps: [
         { id: 'system', role: 'system', template: 'You are a CPA and financial analyst. Generate professional P&L statements with accurate calculations and insightful financial analysis.' },
-        { id: 'generate', role: 'user', template: `Generate a P&L Statement:\n\nBusiness: {{businessName}}\nPeriod: {{period}}\nRevenue:\n{{revenue}}\nCOGS: ${{cogs}}\nExpenses:\n{{expenses}}\nTaxes: ${{taxes}}\n\nCreate a complete P&L with: Revenue section, COGS, Gross Profit, Operating Expenses breakdown, EBITDA, Net Income/Loss. Include: gross margin %, operating margin %, net margin %. Add 3-5 key financial insights and recommendations.` },
+        { id: 'generate', role: 'user', template: `Generate a P&L Statement:\n\nBusiness: {{businessName}}\nPeriod: {{period}}\nRevenue:\n{{revenue}}\nCOGS: \$\{\{cogs}}\nExpenses:\n{{expenses}}\nTaxes: \$\{\{taxes}}\n\nCreate a complete P&L with: Revenue section, COGS, Gross Profit, Operating Expenses breakdown, EBITDA, Net Income/Loss. Include: gross margin %, operating margin %, net margin %. Add 3-5 key financial insights and recommendations.` },
       ],
       outputFormat: 'text', maxTokens: 1500, temperature: 0.2,
     },
@@ -263,7 +263,7 @@ export const CATEGORY_4_TOOLS: ToolConfig[] = [
       version: '1.0.0',
       steps: [
         { id: 'system', role: 'system', template: 'You are a CPA specializing in self-employment taxation. Provide accurate tax calculations with practical guidance.' },
-        { id: 'generate', role: 'user', template: `Calculate self-employment taxes:\n\nNet SE Income: ${{netIncome}}\nOther Income: ${{otherIncome}}\nFiling: {{filingStatus}}\nState: {{state}}\nRetirement: ${{retirementContribution}}\n\nCalculate:\n1. Self-employment tax (15.3% up to SS wage base, 2.9% above)\n2. SE tax deduction (50% deduction)\n3. Federal income tax estimate\n4. State tax for {{state}}\n5. Total tax liability\n6. Quarterly payment schedule (dates + amounts)\n7. Effective tax rate\n8. Strategies to reduce SE tax burden` },
+        { id: 'generate', role: 'user', template: `Calculate self-employment taxes:\n\nNet SE Income: \$\{\{netIncome}}\nOther Income: \$\{\{otherIncome}}\nFiling: {{filingStatus}}\nState: {{state}}\nRetirement: \$\{\{retirementContribution}}\n\nCalculate:\n1. Self-employment tax (15.3% up to SS wage base, 2.9% above)\n2. SE tax deduction (50% deduction)\n3. Federal income tax estimate\n4. State tax for {{state}}\n5. Total tax liability\n6. Quarterly payment schedule (dates + amounts)\n7. Effective tax rate\n8. Strategies to reduce SE tax burden` },
       ],
       outputFormat: 'text', maxTokens: 1500, temperature: 0.2,
     },
@@ -296,7 +296,7 @@ export const CATEGORY_4_TOOLS: ToolConfig[] = [
       version: '1.0.0',
       steps: [
         { id: 'system', role: 'system', template: 'You are a payroll tax specialist and CPA. Provide accurate W4 withholding recommendations that help employees optimize their paychecks.' },
-        { id: 'generate', role: 'user', template: `Calculate W4 withholding:\n\nSalary: ${{annualSalary}} + spouse: ${{spouseIncome}}\nOther income: ${{otherIncome}}\nFiling: {{filingStatus}}\nDependents: {{dependents}}\nDeductions: {{deductions}} {{#if itemizedAmount}}(${{itemizedAmount}}){{/if}}\nState: {{state}}\nGoal: {{goal}}\n\nProvide:\n1. Estimated annual federal tax liability\n2. Current withholding based on salary\n3. Recommended W4 settings (Step 3 child credits, Step 4 additional withholding/deductions)\n4. Estimated refund or amount owed\n5. How to fill in each W4 section\n6. State withholding recommendation for {{state}}\n7. Tips to achieve {{goal}} goal` },
+        { id: 'generate', role: 'user', template: `Calculate W4 withholding:\n\nSalary: \$\{\{annualSalary}} + spouse: \$\{\{spouseIncome}}\nOther income: \$\{\{otherIncome}}\nFiling: {{filingStatus}}\nDependents: {{dependents}}\nDeductions: {{deductions}} {{#if itemizedAmount}}(\$\{\{itemizedAmount}}){{/if}}\nState: {{state}}\nGoal: {{goal}}\n\nProvide:\n1. Estimated annual federal tax liability\n2. Current withholding based on salary\n3. Recommended W4 settings (Step 3 child credits, Step 4 additional withholding/deductions)\n4. Estimated refund or amount owed\n5. How to fill in each W4 section\n6. State withholding recommendation for {{state}}\n7. Tips to achieve {{goal}} goal` },
       ],
       outputFormat: 'text', maxTokens: 1500, temperature: 0.2,
     },

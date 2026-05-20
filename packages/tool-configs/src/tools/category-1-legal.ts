@@ -319,7 +319,7 @@ export const leaseAgreementGenerator: ToolConfig = {
     version: '1.1.0',
     steps: [
       { id: 'system', role: 'system', template: 'You are a real estate law expert specializing in US landlord-tenant law. Generate comprehensive, state-compliant lease agreements that protect both parties.' },
-      { id: 'generate', role: 'user', template: `Generate a complete {{leaseType}} Lease Agreement:\n\nLandlord: {{landlordName}}\nTenant: {{tenantName}}\nProperty: {{propertyAddress}}\nState: {{state}}\nRent: ${{monthlyRent}}/month\nDeposit: ${{securityDeposit}}\nTerm: {{leaseTerm}}\nStart: {{startDate}}\nPets: {{petPolicy}}\nUtilities included: {{utilitiesIncluded}}\nLate fee: ${{lateFee}}\n\nInclude all required {{state}} state-specific clauses, disclosures (lead paint if pre-1978, etc.), entry notice requirements, and standard lease provisions. Format with numbered sections.` },
+      { id: 'generate', role: 'user', template: `Generate a complete {{leaseType}} Lease Agreement:\n\nLandlord: {{landlordName}}\nTenant: {{tenantName}}\nProperty: {{propertyAddress}}\nState: {{state}}\nRent: \$\{\{monthlyRent}}/month\nDeposit: \$\{\{securityDeposit}}\nTerm: {{leaseTerm}}\nStart: {{startDate}}\nPets: {{petPolicy}}\nUtilities included: {{utilitiesIncluded}}\nLate fee: \$\{\{lateFee}}\n\nInclude all required {{state}} state-specific clauses, disclosures (lead paint if pre-1978, etc.), entry notice requirements, and standard lease provisions. Format with numbered sections.` },
     ],
     outputFormat: 'text',
     maxTokens: 5000,
@@ -436,7 +436,7 @@ export const independentContractorAgreement: ToolConfig = {
     version: '1.0.0',
     steps: [
       { id: 'system', role: 'system', template: 'You are an employment and contract law attorney. Generate comprehensive Independent Contractor Agreements that clearly establish contractor status and protect all parties.' },
-      { id: 'generate', role: 'user', template: `Generate an Independent Contractor Agreement:\n\nClient: {{clientName}}\nContractor: {{contractorName}}\nState: {{state}}\nServices: {{serviceDescription}}\nPayment: {{paymentType}} — ${{paymentAmount}}\nDuration: {{projectDuration}}\nIP: {{ipOwnership}}\nConfidentiality: {{confidentiality}}\nNon-solicitation: {{nonSolicitation}}\n\nInclude: Independent contractor status (IRS test compliance), services, payment, IP ownership, confidentiality, termination, governing law, entire agreement clause. Emphasize independent contractor (not employee) status.` },
+      { id: 'generate', role: 'user', template: `Generate an Independent Contractor Agreement:\n\nClient: {{clientName}}\nContractor: {{contractorName}}\nState: {{state}}\nServices: {{serviceDescription}}\nPayment: {{paymentType}} — \$\{\{paymentAmount}}\nDuration: {{projectDuration}}\nIP: {{ipOwnership}}\nConfidentiality: {{confidentiality}}\nNon-solicitation: {{nonSolicitation}}\n\nInclude: Independent contractor status (IRS test compliance), services, payment, IP ownership, confidentiality, termination, governing law, entire agreement clause. Emphasize independent contractor (not employee) status.` },
     ],
     outputFormat: 'text',
     maxTokens: 3500,
@@ -547,7 +547,7 @@ export const demandLetterGenerator: ToolConfig = {
     version: '1.0.0',
     steps: [
       { id: 'system', role: 'system', template: 'You are a litigation attorney. Generate firm, professional demand letters that clearly state the legal basis for the claim and consequences of non-payment.' },
-      { id: 'generate', role: 'user', template: `Generate a Demand Letter:\n\nFrom: {{senderName}}\nTo: {{recipientName}}\nState: {{state}}\nClaim: {{claimType}}\nAmount: ${{amountOwed}}\nDetails: {{description}}\nDeadline: {{deadline}} days\n\nFirm but professional tone. Include: clear statement of what is owed and why, specific payment deadline, next steps if not paid (small claims court, legal action). Keep under 1 page.` },
+      { id: 'generate', role: 'user', template: `Generate a Demand Letter:\n\nFrom: {{senderName}}\nTo: {{recipientName}}\nState: {{state}}\nClaim: {{claimType}}\nAmount: \$\{\{amountOwed}}\nDetails: {{description}}\nDeadline: {{deadline}} days\n\nFirm but professional tone. Include: clear statement of what is owed and why, specific payment deadline, next steps if not paid (small claims court, legal action). Keep under 1 page.` },
     ],
     outputFormat: 'text',
     maxTokens: 1500,
@@ -608,7 +608,7 @@ export const freelanceContractGenerator: ToolConfig = {
     version: '1.1.0',
     steps: [
       { id: 'system', role: 'system', template: 'You are a freelance business attorney. Generate comprehensive freelance contracts that protect both parties and clearly define deliverables, payment, and IP ownership.' },
-      { id: 'generate', role: 'user', template: `Generate a Freelance Contract:\n\nFreelancer: {{freelancerName}}\nClient: {{clientName}}\nState: {{state}}\nProject: {{projectTitle}}\nDeliverables: {{projectDescription}}\nFee: ${{projectFee}}\nPayment: {{paymentSchedule}}\nRevisions: {{revisions}}\nDeadline: {{deadline}}\nIP: {{ipOwnership}}\nLate fee: {{latePaymentFee}}%/month\n\nInclude: project scope, deliverables, payment terms, revisions policy, IP ownership, confidentiality, termination, dispute resolution, entire agreement. Protect the freelancer's right to payment.` },
+      { id: 'generate', role: 'user', template: `Generate a Freelance Contract:\n\nFreelancer: {{freelancerName}}\nClient: {{clientName}}\nState: {{state}}\nProject: {{projectTitle}}\nDeliverables: {{projectDescription}}\nFee: \$\{\{projectFee}}\nPayment: {{paymentSchedule}}\nRevisions: {{revisions}}\nDeadline: {{deadline}}\nIP: {{ipOwnership}}\nLate fee: {{latePaymentFee}}%/month\n\nInclude: project scope, deliverables, payment terms, revisions policy, IP ownership, confidentiality, termination, dispute resolution, entire agreement. Protect the freelancer's right to payment.` },
     ],
     outputFormat: 'text',
     maxTokens: 3500,

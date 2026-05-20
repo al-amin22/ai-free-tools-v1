@@ -28,7 +28,7 @@ export const CATEGORY_7_TOOLS: ToolConfig[] = [
       version: '1.0.0',
       steps: [
         { id: 'system', role: 'system', template: 'You are a finance and contract law attorney. Generate legally binding promissory notes that comply with state usury laws and include all required provisions.' },
-        { id: 'generate', role: 'user', template: `Generate a Promissory Note:\n\nLender: {{lenderName}}\nBorrower: {{borrowerName}}\nState: {{state}}\nAmount: ${{loanAmount}}\nRate: {{interestRate}}% APR\nRepayment: {{repaymentType}}\nTerm: {{loanTerm}} months\nDate: {{loanDate}}\nSecured: {{secured}}\nCollateral: {{collateral}}\n\nInclude: principal, interest rate (verify usury limit for {{state}}), repayment schedule, default provisions, acceleration clause, governing law, signatures. Legal disclaimer included.` },
+        { id: 'generate', role: 'user', template: `Generate a Promissory Note:\n\nLender: {{lenderName}}\nBorrower: {{borrowerName}}\nState: {{state}}\nAmount: \$\{\{loanAmount}}\nRate: {{interestRate}}% APR\nRepayment: {{repaymentType}}\nTerm: {{loanTerm}} months\nDate: {{loanDate}}\nSecured: {{secured}}\nCollateral: {{collateral}}\n\nInclude: principal, interest rate (verify usury limit for {{state}}), repayment schedule, default provisions, acceleration clause, governing law, signatures. Legal disclaimer included.` },
       ],
       outputFormat: 'text', maxTokens: 2500, temperature: 0.2,
     },
@@ -61,7 +61,7 @@ export const CATEGORY_7_TOOLS: ToolConfig[] = [
       version: '1.0.0',
       steps: [
         { id: 'system', role: 'system', template: 'You are a contract law specialist. Generate legally valid bills of sale with state-compliant provisions and all necessary disclosures.' },
-        { id: 'generate', role: 'user', template: `Generate a Bill of Sale:\n\nSeller: {{sellerName}}\nBuyer: {{buyerName}}\nState: {{state}}\nProperty: {{propertyType}} — {{propertyDescription}}\nVIN/Serial: {{vin}}\nPrice: ${{salePrice}}\nDate: {{saleDate}}\nAs-Is: {{asIs}}\n\nInclude: complete property description, sale price, payment terms, as-is clause (if applicable), {{state}}-specific disclosures for {{propertyType}}, warranties (or disclaimer), signatures, notary block if required by {{state}}.` },
+        { id: 'generate', role: 'user', template: `Generate a Bill of Sale:\n\nSeller: {{sellerName}}\nBuyer: {{buyerName}}\nState: {{state}}\nProperty: {{propertyType}} — {{propertyDescription}}\nVIN/Serial: {{vin}}\nPrice: \$\{\{salePrice}}\nDate: {{saleDate}}\nAs-Is: {{asIs}}\n\nInclude: complete property description, sale price, payment terms, as-is clause (if applicable), {{state}}-specific disclosures for {{propertyType}}, warranties (or disclaimer), signatures, notary block if required by {{state}}.` },
       ],
       outputFormat: 'text', maxTokens: 2000, temperature: 0.2,
     },
@@ -221,7 +221,7 @@ export const CATEGORY_7_TOOLS: ToolConfig[] = [
       version: '1.0.0',
       steps: [
         { id: 'system', role: 'system', template: 'You are a payroll specialist and CPA. Generate accurate pay stubs with precise tax withholding calculations. Show all deductions and net pay clearly.' },
-        { id: 'generate', role: 'user', template: `Generate a Pay Stub:\n\nEmployer: {{employerName}}\nAddress: {{employerAddress}}\nEmployee: {{employeeName}} (ID: {{employeeId}})\nState: {{state}}\nPay Period: {{payPeriodStart}} — {{payPeriodEnd}}\nPay Date: {{payDate}}\nType: {{payType}}\nGross Pay: ${{grossPay}}\nHours: {{hoursWorked}}\nFiling Status: {{filingStatus}}\nAllowances: {{federalAllowances}}\nExtra Deductions: {{additionalDeductions}}\nYTD Gross: ${{ytdGross}}\n\nCalculate and format a complete pay stub with:\n- Earnings section (regular pay, overtime if applicable)\n- Federal tax withholding (estimate based on filing status)\n- Social Security (6.2% up to wage base)\n- Medicare (1.45%)\n- State income tax for {{state}}\n- Additional deductions\n- Total deductions\n- Net pay\n- YTD totals\n\nFormat as a professional payroll document.` },
+        { id: 'generate', role: 'user', template: `Generate a Pay Stub:\n\nEmployer: {{employerName}}\nAddress: {{employerAddress}}\nEmployee: {{employeeName}} (ID: {{employeeId}})\nState: {{state}}\nPay Period: {{payPeriodStart}} — {{payPeriodEnd}}\nPay Date: {{payDate}}\nType: {{payType}}\nGross Pay: \$\{\{grossPay}}\nHours: {{hoursWorked}}\nFiling Status: {{filingStatus}}\nAllowances: {{federalAllowances}}\nExtra Deductions: {{additionalDeductions}}\nYTD Gross: \$\{\{ytdGross}}\n\nCalculate and format a complete pay stub with:\n- Earnings section (regular pay, overtime if applicable)\n- Federal tax withholding (estimate based on filing status)\n- Social Security (6.2% up to wage base)\n- Medicare (1.45%)\n- State income tax for {{state}}\n- Additional deductions\n- Total deductions\n- Net pay\n- YTD totals\n\nFormat as a professional payroll document.` },
       ],
       outputFormat: 'text', maxTokens: 1500, temperature: 0.1,
     },

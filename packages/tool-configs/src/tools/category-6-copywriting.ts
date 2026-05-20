@@ -152,7 +152,7 @@ export const CATEGORY_6_TOOLS: ToolConfig[] = [
       version: '1.0.0',
       steps: [
         { id: 'system', role: 'system', template: 'You are an e-commerce conversion copywriter. Write product descriptions that sell benefits (not just features), create desire, and drive purchases.' },
-        { id: 'generate', role: 'user', template: `Write a {{length}} product description:\n\nProduct: {{productName}} ({{productCategory}})\nCustomer: {{targetCustomer}}\nFeatures: {{keyFeatures}}\nProblem solved: {{painPoints}}\nPrice: ${{price}}\nTone: {{tone}}\n\nWrite a {{tone}} description that: leads with the customer's pain/desire, highlights benefits over features, includes social proof language naturally, creates desire, ends with subtle CTA. Optimize for relevant search terms. Format with a headline + body.` },
+        { id: 'generate', role: 'user', template: `Write a {{length}} product description:\n\nProduct: {{productName}} ({{productCategory}})\nCustomer: {{targetCustomer}}\nFeatures: {{keyFeatures}}\nProblem solved: {{painPoints}}\nPrice: \$\{\{price}}\nTone: {{tone}}\n\nWrite a {{tone}} description that: leads with the customer's pain/desire, highlights benefits over features, includes social proof language naturally, creates desire, ends with subtle CTA. Optimize for relevant search terms. Format with a headline + body.` },
       ],
       outputFormat: 'text', maxTokens: 600, temperature: 0.6,
     },

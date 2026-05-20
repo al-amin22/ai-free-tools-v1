@@ -58,9 +58,9 @@ Generate a detailed budget plan with monthly projections, expense categories, br
 - Industry: {{industry}}
 
 **Cost Structure:**
-- Fixed Monthly Costs: ${{fixedCosts}}
-- Variable Cost per Unit: ${{variableCostPerUnit}}
-- Selling Price per Unit: ${{sellingPrice}}
+- Fixed Monthly Costs: \$\{\{fixedCosts}}
+- Variable Cost per Unit: \$\{\{variableCostPerUnit}}
+- Selling Price per Unit: \$\{\{sellingPrice}}
 
 **Additional Context:**
 {{additionalContext}}
@@ -78,8 +78,8 @@ Generate a complete break-even analysis with: break-even point in units and doll
 - Business Model: {{businessModel}}
 
 **Current Financials:**
-- Current Monthly Revenue: ${{currentRevenue}}
-- Current Monthly Expenses: ${{currentExpenses}}
+- Current Monthly Revenue: \$\{\{currentRevenue}}
+- Current Monthly Expenses: \$\{\{currentExpenses}}
 
 **Growth Assumptions:**
 - Revenue Growth Rate: {{revenueGrowth}}% annually

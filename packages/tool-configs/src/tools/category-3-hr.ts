@@ -36,7 +36,7 @@ const jobDescriptionGenerator: ToolConfig = {
     version: '1.1.0',
     steps: [
       { id: 'system', role: 'system', template: 'You are an HR expert and talent acquisition specialist. Generate compelling, ATS-optimized job descriptions with inclusive language that attracts diverse, qualified candidates.' },
-      { id: 'generate', role: 'user', template: `Generate an ATS-optimized job description:\n\nTitle: {{jobTitle}}\nCompany: {{company}}\nDepartment: {{department}}\nType: {{jobType}} | {{workLocation}}\nLevel: {{experienceLevel}}\nSalary: ${{salaryMin}}-${{salaryMax}}\nIndustry: {{industryType}}\nResponsibilities: {{responsibilities}}\nSkills: {{skills}}\n\nInclude: compelling job summary (2-3 sentences), responsibilities section (5-8 bullets), qualifications (required + preferred), what we offer/benefits, equal opportunity statement. Use inclusive language. Optimize for ATS keywords. Format with clear sections.` },
+      { id: 'generate', role: 'user', template: `Generate an ATS-optimized job description:\n\nTitle: {{jobTitle}}\nCompany: {{company}}\nDepartment: {{department}}\nType: {{jobType}} | {{workLocation}}\nLevel: {{experienceLevel}}\nSalary: \$\{\{salaryMin}}-\$\{\{salaryMax}}\nIndustry: {{industryType}}\nResponsibilities: {{responsibilities}}\nSkills: {{skills}}\n\nInclude: compelling job summary (2-3 sentences), responsibilities section (5-8 bullets), qualifications (required + preferred), what we offer/benefits, equal opportunity statement. Use inclusive language. Optimize for ATS keywords. Format with clear sections.` },
     ],
     outputFormat: 'text',
     maxTokens: 2000,
@@ -320,7 +320,7 @@ const jobOfferLetterGenerator: ToolConfig = {
     version: '1.0.0',
     steps: [
       { id: 'system', role: 'system', template: 'You are an HR professional. Generate warm, professional job offer letters that are legally appropriate and compelling to candidates.' },
-      { id: 'generate', role: 'user', template: `Generate a job offer letter:\n\nCompany: {{company}}\nCandidate: {{candidateName}}\nRole: {{jobTitle}} | {{workLocation}}\nStart: {{startDate}}\nSalary: ${{salary}} ({{payFrequency}})\nBenefits: {{benefits}}\nContingencies: {{contingencies}}\nAccept By: {{acceptanceDeadline}}\n\nWrite a warm, professional offer letter that: congratulates candidate, states the position and terms clearly, lists compensation and benefits, notes any contingencies, sets acceptance deadline, expresses enthusiasm for them joining. Professional but human tone.` },
+      { id: 'generate', role: 'user', template: `Generate a job offer letter:\n\nCompany: {{company}}\nCandidate: {{candidateName}}\nRole: {{jobTitle}} | {{workLocation}}\nStart: {{startDate}}\nSalary: \$\{\{salary}} ({{payFrequency}})\nBenefits: {{benefits}}\nContingencies: {{contingencies}}\nAccept By: {{acceptanceDeadline}}\n\nWrite a warm, professional offer letter that: congratulates candidate, states the position and terms clearly, lists compensation and benefits, notes any contingencies, sets acceptance deadline, expresses enthusiasm for them joining. Professional but human tone.` },
     ],
     outputFormat: 'text',
     maxTokens: 1200,

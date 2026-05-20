@@ -77,7 +77,7 @@ Generate a balanced, specific, and actionable performance review using the STAR 
 - Position: {{position}}
 - Department: {{department}}
 - Start Date: {{startDate}}
-- Salary: ${{salary}} {{salaryFrequency}}
+- Salary: \$\{\{salary}} {{salaryFrequency}}
 - Employment Type: {{employmentType}}
 - Work Location: {{workLocation}}
 

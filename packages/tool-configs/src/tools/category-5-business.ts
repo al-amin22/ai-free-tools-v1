@@ -29,7 +29,7 @@ export const CATEGORY_5_TOOLS: ToolConfig[] = [
       version: '1.1.0',
       steps: [
         { id: 'system', role: 'system', template: 'You are a seasoned startup advisor, MBA, and venture capital consultant. Generate comprehensive, realistic, investor-grade business plans.' },
-        { id: 'generate', role: 'user', template: `Generate a {{planType}} for:\n\nBusiness: {{businessName}}\nIndustry: {{industry}}\nModel: {{businessModel}}\nTarget: {{targetMarket}}\nProblem: {{problemSolved}}\nSolution: {{solution}}\nCompetitors: {{competitors}}\nRevenue: {{revenueModel}}\nStartup Cost: ${{startupCosts}}\nYear 1 Target: ${{firstYearRevenue}}\n\nInclude: Executive Summary, Company Description, Market Analysis, Products/Services, Marketing Strategy, Operations Plan, Management Team section, Financial Projections (3-year), Funding Requirements. Be specific and realistic.` },
+        { id: 'generate', role: 'user', template: `Generate a {{planType}} for:\n\nBusiness: {{businessName}}\nIndustry: {{industry}}\nModel: {{businessModel}}\nTarget: {{targetMarket}}\nProblem: {{problemSolved}}\nSolution: {{solution}}\nCompetitors: {{competitors}}\nRevenue: {{revenueModel}}\nStartup Cost: \$\{\{startupCosts}}\nYear 1 Target: \$\{\{firstYearRevenue}}\n\nInclude: Executive Summary, Company Description, Market Analysis, Products/Services, Marketing Strategy, Operations Plan, Management Team section, Financial Projections (3-year), Funding Requirements. Be specific and realistic.` },
       ],
       outputFormat: 'text', maxTokens: 5000, temperature: 0.4,
     },
@@ -63,7 +63,7 @@ export const CATEGORY_5_TOOLS: ToolConfig[] = [
       version: '1.0.0',
       steps: [
         { id: 'system', role: 'system', template: 'You are a business development expert and proposal writer. Generate compelling, persuasive business proposals that focus on client value.' },
-        { id: 'generate', role: 'user', template: `Generate a {{tone}} business proposal:\n\nFrom: {{senderCompany}}\nTo: {{clientCompany}}\nTitle: {{projectTitle}}\nProblem: {{problemStatement}}\nSolution: {{proposedSolution}}\nDeliverables: {{deliverables}}\nTimeline: {{timeline}}\nCost: ${{totalCost}}\nPayment: {{paymentTerms}}\n\nStructure: Executive Summary, Understanding of Client's Needs, Proposed Solution, Deliverables & Timeline, Investment/Pricing, About Us, Next Steps. Focus on client ROI and value, not just features.` },
+        { id: 'generate', role: 'user', template: `Generate a {{tone}} business proposal:\n\nFrom: {{senderCompany}}\nTo: {{clientCompany}}\nTitle: {{projectTitle}}\nProblem: {{problemStatement}}\nSolution: {{proposedSolution}}\nDeliverables: {{deliverables}}\nTimeline: {{timeline}}\nCost: \$\{\{totalCost}}\nPayment: {{paymentTerms}}\n\nStructure: Executive Summary, Understanding of Client's Needs, Proposed Solution, Deliverables & Timeline, Investment/Pricing, About Us, Next Steps. Focus on client ROI and value, not just features.` },
       ],
       outputFormat: 'text', maxTokens: 3000, temperature: 0.4,
     },

@@ -13,11 +13,11 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
-    "@aifreetools/shared-types": "*",
-    "@aifreetools/tool-configs": "*",
-    "@aifreetools/ai-prompts": "*",
-    "@aifreetools/seo-utils": "*",
-    "@aifreetools/ui-components": "*",
+    "@aifreetools/shared-types": "workspace:*",
+    "@aifreetools/tool-configs": "workspace:*",
+    "@aifreetools/ai-prompts": "workspace:*",
+    "@aifreetools/seo-utils": "workspace:*",
+    "@aifreetools/ui-components": "workspace:*",
     "next": "15.1.0",
     "react": "19.0.0",
     "react-dom": "19.0.0",

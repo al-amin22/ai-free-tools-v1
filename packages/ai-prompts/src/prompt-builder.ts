@@ -1,6 +1,6 @@
 import Handlebars from 'handlebars';
 
-Handlebars.registerHelper('ifEquals', function (a: unknown, b: unknown, options: Handlebars.HelperOptions) {
+Handlebars.registerHelper('ifEquals', function (this: unknown, a: unknown, b: unknown, options: Handlebars.HelperOptions) {
   return a === b ? options.fn(this) : options.inverse(this);
 });
 

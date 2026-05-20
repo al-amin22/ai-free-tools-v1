@@ -24,7 +24,7 @@ export function parseToolUrl(pathname: string): { toolId: string; stateCode?: st
   const match = pathname.match(/^\/tools\/([^/]+)(?:\/([a-z]{2}))?$/);
   if (!match) return null;
   return {
-    toolId: match[1],
+    toolId: match[1] ?? '',
     stateCode: match[2]?.toUpperCase(),
   };
 }

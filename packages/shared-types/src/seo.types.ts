@@ -1,3 +1,6 @@
+import type { FAQItem } from './tool.types';
+export type { FAQItem };
+
 export type SEOPageType =
   | 'tool'
   | 'state'
@@ -20,11 +23,6 @@ export interface SEOMetadata {
   keywords?: string[];
 }
 
-export interface FAQItem {
-  question: string;
-  answer: string;
-  sortOrder?: number;
-}
 
 export interface BreadcrumbItem {
   label: string;

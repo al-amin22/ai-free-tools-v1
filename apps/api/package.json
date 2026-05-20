@@ -16,10 +16,10 @@
     "prisma:studio": "prisma studio"
   },
   "dependencies": {
-    "@aifreetools/shared-types": "*",
-    "@aifreetools/tool-configs": "*",
-    "@aifreetools/ai-prompts": "*",
-    "@aifreetools/seo-utils": "*",
+    "@aifreetools/shared-types": "workspace:*",
+    "@aifreetools/tool-configs": "workspace:*",
+    "@aifreetools/ai-prompts": "workspace:*",
+    "@aifreetools/seo-utils": "workspace:*",
     "@nestjs/common": "^10.4.0",
     "@nestjs/core": "^10.4.0",
     "@nestjs/platform-express": "^10.4.0",

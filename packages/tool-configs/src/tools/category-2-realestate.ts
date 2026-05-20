@@ -32,7 +32,7 @@ export const evictionNoticeGenerator: ToolConfig = {
     version: '1.0.0',
     steps: [
       { id: 'system', role: 'system', template: 'You are a real estate law attorney specializing in landlord-tenant law. Generate legally compliant eviction notices that follow state-specific procedural requirements.' },
-      { id: 'generate', role: 'user', template: `Generate an Eviction Notice:\n\nLandlord: {{landlordName}}\nTenant: {{tenantName}}\nProperty: {{propertyAddress}}\nState: {{state}}\nNotice Type: {{noticeType}}\nAmount Owed: ${{amountOwed}}\nViolation: {{violationDescription}}\nNotice Period: {{noticePeriod}} days\n\nMust comply with {{state}} landlord-tenant law. Include correct notice period, proper service instructions, and tenant's rights. Note any {{state}}-specific requirements.` },
+      { id: 'generate', role: 'user', template: `Generate an Eviction Notice:\n\nLandlord: {{landlordName}}\nTenant: {{tenantName}}\nProperty: {{propertyAddress}}\nState: {{state}}\nNotice Type: {{noticeType}}\nAmount Owed: \$\{\{amountOwed}}\nViolation: {{violationDescription}}\nNotice Period: {{noticePeriod}} days\n\nMust comply with {{state}} landlord-tenant law. Include correct notice period, proper service instructions, and tenant's rights. Note any {{state}}-specific requirements.` },
     ],
     outputFormat: 'text',
     maxTokens: 2000,
@@ -92,7 +92,7 @@ export const realEstateOfferLetter: ToolConfig = {
     version: '1.0.0',
     steps: [
       { id: 'system', role: 'system', template: 'You are a real estate attorney and negotiation expert. Generate compelling offer letters that are professionally written and improve the buyer\'s chances of acceptance.' },
-      { id: 'generate', role: 'user', template: `Generate a Real Estate Offer Letter:\n\nBuyer: {{buyerName}}\nSeller: {{sellerName}}\nProperty: {{propertyAddress}}\nState: {{state}}\nOffer: ${{offerPrice}}\nDown Payment: ${{downPayment}}\nFinancing: {{financingType}}\nClosing: {{closingDate}}\nContingencies: {{contingencies}}\nEarnest Money: ${{earnestMoney}}\nTone: {{tone}}\n\nWrite a {{tone}} offer letter that clearly states the offer terms, demonstrates the buyer's seriousness, and addresses any competitive elements.` },
+      { id: 'generate', role: 'user', template: `Generate a Real Estate Offer Letter:\n\nBuyer: {{buyerName}}\nSeller: {{sellerName}}\nProperty: {{propertyAddress}}\nState: {{state}}\nOffer: \$\{\{offerPrice}}\nDown Payment: \$\{\{downPayment}}\nFinancing: {{financingType}}\nClosing: {{closingDate}}\nContingencies: {{contingencies}}\nEarnest Money: \$\{\{earnestMoney}}\nTone: {{tone}}\n\nWrite a {{tone}} offer letter that clearly states the offer terms, demonstrates the buyer's seriousness, and addresses any competitive elements.` },
     ],
     outputFormat: 'text',
     maxTokens: 2000,
@@ -148,7 +148,7 @@ export const rentalApplicationGenerator: ToolConfig = {
     version: '1.0.0',
     steps: [
       { id: 'system', role: 'system', template: 'You are a property management expert. Generate comprehensive rental applications that comply with fair housing laws and collect all necessary screening information.' },
-      { id: 'generate', role: 'user', template: `Generate a Rental Application for:\n\nLandlord: {{landlordName}}\nProperty: {{propertyAddress}}\nState: {{state}}\nRent: ${{monthlyRent}}\nApp Fee: ${{applicationFee}}\nCredit Check: {{creditCheckConsent}}\nBackground Check: {{backgroundCheckConsent}}\nPets: {{petPolicy}}\n\nCreate a complete rental application form with sections: Personal Info, Rental History, Employment, Income, References, Consent to Credit/Background Check (if applicable). Must comply with {{state}} fair housing laws.` },
+      { id: 'generate', role: 'user', template: `Generate a Rental Application for:\n\nLandlord: {{landlordName}}\nProperty: {{propertyAddress}}\nState: {{state}}\nRent: \$\{\{monthlyRent}}\nApp Fee: \$\{\{applicationFee}}\nCredit Check: {{creditCheckConsent}}\nBackground Check: {{backgroundCheckConsent}}\nPets: {{petPolicy}}\n\nCreate a complete rental application form with sections: Personal Info, Rental History, Employment, Income, References, Consent to Credit/Background Check (if applicable). Must comply with {{state}} fair housing laws.` },
     ],
     outputFormat: 'text',
     maxTokens: 3000,
@@ -212,7 +212,7 @@ export const realEstateROICalculator: ToolConfig = {
     version: '1.0.0',
     steps: [
       { id: 'system', role: 'system', template: 'You are a real estate investment analyst. Analyze investment property data and provide comprehensive ROI metrics with actionable insights. Always show your calculations.' },
-      { id: 'generate', role: 'user', template: `Analyze this real estate investment:\n\nPurchase: ${{purchasePrice}}\nDown Payment: ${{downPayment}}\nClosing: ${{closingCosts}}\nRehab: ${{rehabCosts}}\nMonthly Rent: ${{monthlyRent}}\nVacancy: {{vacancyRate}}%\nTax: ${{propertyTaxMonthly}}/mo\nInsurance: ${{insuranceMonthly}}/mo\nMaintenance: ${{maintenanceMonthly}}/mo\nPM: {{propertyManagement}}%\nMortgage: {{mortgageRate}}% / {{mortgageTerm}}yr\nAppreciation: {{appreciationRate}}%/yr\nState: {{state}}\n\nCalculate and provide:\n1. Cap Rate\n2. Cash-on-Cash Return\n3. Gross Rent Multiplier\n4. Monthly Cash Flow\n5. Annual Cash Flow\n6. 5-Year and 10-Year ROI projection\n7. Break-even analysis\n8. Investment rating (Strong/Moderate/Weak) with reasoning\n9. Key risks and considerations\n10. Recommendations\n\nFormat clearly with sections and highlight the most important metrics.` },
+      { id: 'generate', role: 'user', template: `Analyze this real estate investment:\n\nPurchase: \$\{\{purchasePrice}}\nDown Payment: \$\{\{downPayment}}\nClosing: \$\{\{closingCosts}}\nRehab: \$\{\{rehabCosts}}\nMonthly Rent: \$\{\{monthlyRent}}\nVacancy: {{vacancyRate}}%\nTax: \$\{\{propertyTaxMonthly}}/mo\nInsurance: \$\{\{insuranceMonthly}}/mo\nMaintenance: \$\{\{maintenanceMonthly}}/mo\nPM: {{propertyManagement}}%\nMortgage: {{mortgageRate}}% / {{mortgageTerm}}yr\nAppreciation: {{appreciationRate}}%/yr\nState: {{state}}\n\nCalculate and provide:\n1. Cap Rate\n2. Cash-on-Cash Return\n3. Gross Rent Multiplier\n4. Monthly Cash Flow\n5. Annual Cash Flow\n6. 5-Year and 10-Year ROI projection\n7. Break-even analysis\n8. Investment rating (Strong/Moderate/Weak) with reasoning\n9. Key risks and considerations\n10. Recommendations\n\nFormat clearly with sections and highlight the most important metrics.` },
     ],
     outputFormat: 'text',
     maxTokens: 2000,
@@ -272,7 +272,7 @@ export const propertyListingGenerator: ToolConfig = {
     version: '1.1.0',
     steps: [
       { id: 'system', role: 'system', template: 'You are an expert real estate copywriter. Generate compelling property listing descriptions that highlight key features, create emotional appeal, and drive inquiries. Match the requested tone precisely.' },
-      { id: 'generate', role: 'user', template: `Write a {{tone}} property listing description (~{{wordCount}} words):\n\nType: {{bedrooms}} bed / {{bathrooms}} bath {{propertyType}} {{listingType}}\nLocation: {{location}}, {{state}}\nSize: {{squareFootage}} sq ft\nPrice: ${{price}}\nHighlights: {{keyFeatures}}\n\nCreate an engaging {{tone}} description that sells the property's best features, creates a picture in the reader's mind, and ends with a compelling call to action. Optimize for real estate search terms.` },
+      { id: 'generate', role: 'user', template: `Write a {{tone}} property listing description (~{{wordCount}} words):\n\nType: {{bedrooms}} bed / {{bathrooms}} bath {{propertyType}} {{listingType}}\nLocation: {{location}}, {{state}}\nSize: {{squareFootage}} sq ft\nPrice: \$\{\{price}}\nHighlights: {{keyFeatures}}\n\nCreate an engaging {{tone}} description that sells the property's best features, creates a picture in the reader's mind, and ends with a compelling call to action. Optimize for real estate search terms.` },
     ],
     outputFormat: 'text',
     maxTokens: 1000,
@@ -328,7 +328,7 @@ export const propertyManagementAgreement: ToolConfig = {
     version: '1.0.0',
     steps: [
       { id: 'system', role: 'system', template: 'You are a real estate attorney specializing in property management law. Generate comprehensive property management agreements.' },
-      { id: 'generate', role: 'user', template: `Generate a Property Management Agreement:\n\nOwner: {{ownerName}}\nManager: {{managerName}}\nProperty: {{propertyAddress}}\nState: {{state}}\nManagement Fee: {{managementFee}}%\nLease-Up Fee: {{leaseUpFee}}%\nMaintenance Limit: ${{maintenanceLimit}}\nTerm: {{contractTerm}} months\n\nInclude: scope of management, fees, owner's responsibilities, manager's authority, maintenance procedures, tenant relations, accounting, termination, governing law.` },
+      { id: 'generate', role: 'user', template: `Generate a Property Management Agreement:\n\nOwner: {{ownerName}}\nManager: {{managerName}}\nProperty: {{propertyAddress}}\nState: {{state}}\nManagement Fee: {{managementFee}}%\nLease-Up Fee: {{leaseUpFee}}%\nMaintenance Limit: \$\{\{maintenanceLimit}}\nTerm: {{contractTerm}} months\n\nInclude: scope of management, fees, owner's responsibilities, manager's authority, maintenance procedures, tenant relations, accounting, termination, governing law.` },
     ],
     outputFormat: 'text',
     maxTokens: 3500,
@@ -386,7 +386,7 @@ export const mortgageAffordabilityCalculator: ToolConfig = {
     version: '1.0.0',
     steps: [
       { id: 'system', role: 'system', template: 'You are a mortgage advisor and financial planner. Calculate mortgage affordability with precision and provide practical, actionable advice.' },
-      { id: 'generate', role: 'user', template: `Calculate mortgage affordability:\n\nIncome: ${{annualIncome}} + ${{coApplicantIncome}} (co-applicant)\nMonthly Debts: ${{monthlyDebts}}\nDown Payment: ${{downPayment}}\nRate: {{interestRate}}% / {{loanTerm}} years\nCredit: {{creditScore}}\nState: {{state}}\nProperty Tax: {{propertyTaxRate}}%/yr\n\nCalculate and provide:\n1. Maximum home price (28% and 36% DTI rules)\n2. Maximum loan amount\n3. Estimated monthly payment breakdown (P&I, taxes, insurance, PMI)\n4. Required income for $[common price points in their area]\n5. Down payment breakdown and PMI implications\n6. Recommendations to increase buying power\n7. Overall assessment and next steps` },
+      { id: 'generate', role: 'user', template: `Calculate mortgage affordability:\n\nIncome: \$\{\{annualIncome}} + \$\{\{coApplicantIncome}} (co-applicant)\nMonthly Debts: \$\{\{monthlyDebts}}\nDown Payment: \$\{\{downPayment}}\nRate: {{interestRate}}% / {{loanTerm}} years\nCredit: {{creditScore}}\nState: {{state}}\nProperty Tax: {{propertyTaxRate}}%/yr\n\nCalculate and provide:\n1. Maximum home price (28% and 36% DTI rules)\n2. Maximum loan amount\n3. Estimated monthly payment breakdown (P&I, taxes, insurance, PMI)\n4. Required income for $[common price points in their area]\n5. Down payment breakdown and PMI implications\n6. Recommendations to increase buying power\n7. Overall assessment and next steps` },
     ],
     outputFormat: 'text',
     maxTokens: 1500,
@@ -445,7 +445,7 @@ export const rentVsBuyCalculator: ToolConfig = {
     version: '1.0.0',
     steps: [
       { id: 'system', role: 'system', template: 'You are a financial advisor specializing in real estate. Provide objective rent vs buy analysis with precise calculations and clear recommendations.' },
-      { id: 'generate', role: 'user', template: `Analyze Rent vs Buy decision:\n\nHome: ${{homePrice}} | {{downPayment}}% down | {{mortgageRate}}% rate\nRent: ${{monthlyRent}}/mo | {{rentIncreaseRate}}% annual increase\nAppreciation: {{homeAppreciation}}%/yr\nProperty Tax: {{propertyTaxRate}}%/yr\nTimeframe: {{yearsToStay}} years\nState: {{state}}\n\nProvide:\n1. Break-even point (when buying becomes cheaper)\n2. Total cost to buy vs rent over {{yearsToStay}} years\n3. Monthly buy vs rent cost comparison\n4. Net worth impact of each scenario\n5. Clear recommendation based on the numbers\n6. Factors that could change the analysis\n7. What to do next` },
+      { id: 'generate', role: 'user', template: `Analyze Rent vs Buy decision:\n\nHome: \$\{\{homePrice}} | {{downPayment}}% down | {{mortgageRate}}% rate\nRent: \$\{\{monthlyRent}}/mo | {{rentIncreaseRate}}% annual increase\nAppreciation: {{homeAppreciation}}%/yr\nProperty Tax: {{propertyTaxRate}}%/yr\nTimeframe: {{yearsToStay}} years\nState: {{state}}\n\nProvide:\n1. Break-even point (when buying becomes cheaper)\n2. Total cost to buy vs rent over {{yearsToStay}} years\n3. Monthly buy vs rent cost comparison\n4. Net worth impact of each scenario\n5. Clear recommendation based on the numbers\n6. Factors that could change the analysis\n7. What to do next` },
     ],
     outputFormat: 'text',
     maxTokens: 1500,

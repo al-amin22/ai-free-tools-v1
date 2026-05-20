@@ -4,12 +4,12 @@ export interface AIRequest {
   provider?: AIProvider;
   model?: string;
   messages: AIMessage[];
-  maxTokens: number;
-  temperature: number;
+  maxTokens?: number;
+  temperature?: number;
   stream?: boolean;
   responseFormat?: 'text' | 'json';
-  toolSlug: string;
-  promptVersion: string;
+  toolSlug?: string;
+  promptVersion?: string;
 }
 
 export interface AIMessage {
@@ -21,10 +21,7 @@ export interface AIResponse {
   content: string;
   provider: AIProvider;
   model: string;
-  tokensInput: number;
-  tokensOutput: number;
-  costUsd: number;
-  latencyMs: number;
+  tokensUsed?: number;
   cached: boolean;
 }
 

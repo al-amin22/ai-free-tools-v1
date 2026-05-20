@@ -20,7 +20,8 @@
     "test": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env.test"],
-      "outputs": ["coverage/**"]
+      "outputs": ["coverage/**"],
+      "cache": false
     },
     "test:e2e": {
       "dependsOn": ["^build"],

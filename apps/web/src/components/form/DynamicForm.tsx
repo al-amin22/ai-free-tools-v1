@@ -13,14 +13,14 @@ interface Props {
 }
 
 export function DynamicForm({ schema, defaultState, onSubmit, isSubmitting, onReset }: Props) {
+  const fieldMap = Object.fromEntries(schema.fields.map((f) => [f.id, f]));
+
   const [values, setValues] = useState<Record<string, unknown>>(() => {
     const init: Record<string, unknown> = {};
-    for (const group of schema.groups) {
-      for (const field of group.fields) {
-        if (field.defaultValue !== undefined) init[field.id] = field.defaultValue;
-        else if (field.type === 'checkbox') init[field.id] = false;
-        else init[field.id] = '';
-      }
+    for (const field of schema.fields) {
+      if (field.defaultValue !== undefined) init[field.id] = field.defaultValue;
+      else if (field.type === 'checkbox') init[field.id] = false;
+      else init[field.id] = '';
     }
     if (defaultState) init['state'] = defaultState;
     return init;
