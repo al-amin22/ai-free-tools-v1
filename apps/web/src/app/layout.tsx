@@ -1,5 +1,8 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import Script from 'next/script';
+import { Header } from '@/components/layout/Header';
+import { Footer } from '@/components/layout/Footer';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
@@ -31,10 +34,27 @@ export const metadata: Metadata = {
   },
 };
 
+const adsenseId = process.env.NEXT_PUBLIC_ADSENSE_ID;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={inter.variable}>
-      <body className="min-h-screen bg-white text-gray-900 antialiased">{children}</body>
+      <head>
+        <link rel="alternate" hrefLang="en-us" href={process.env.NEXT_PUBLIC_BASE_URL ?? 'https://aifreetools.com'} />
+        {adsenseId && !adsenseId.includes('XXXXXXXX') && (
+          <Script
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseId}`}
+            crossOrigin="anonymous"
+            strategy="afterInteractive"
+          />
+        )}
+      </head>
+      <body className="min-h-screen bg-white text-gray-900 antialiased">
+        <Header />
+        <main>{children}</main>
+        <Footer />
+      </body>
     </html>
   );
 }
